@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: @project.build.finalName@
+  banner:
+    location: classpath:banner.txt
+  profiles:
+    active: @profile.id@
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        auto_quote_keyword: true
+  liquibase:
+    change-log: classpath:db/changelog-@profile.liquibase.context@.xml
+    contexts: @profile.liquibase.context@
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+  cache:
+    disabled: true
+server:
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: @profile.log.path@
+      prefix: access_log
+      suffix: .log
+      pattern: "[ACCESS] %t %A --> %a %p %r %s %S %u thread:%I sent:%bb taken:%Dms"
+      rotate: false
+management:
+  server:
+    port: 8082
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
+      show-details: always
+    metrics:
+      enabled: true
+    heapdump:
+      enabled: true
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: info, health, metrics, heapdump
+      base-path: /

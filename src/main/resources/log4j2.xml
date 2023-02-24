@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <!-- properties -->
+    <Properties>
+        <Property name="STACKTRACE_FILTER">
+            sun.reflect,org.apache.tomcat,org.apache.coyote,org.apache.catalina,org.apache.jasper,javax.servlet.http
+        </Property>
+        <Property name="TRACE_PATTERN">%equals{%X{traceId}}{}{-}/%equals{%X{spanId}}{}{-}/%equals{%X{parentId}}{}{-}
+        </Property>
+        <Property name="PREFIX_PATTERN">%d{ISO8601} [Thread ID=%-3threadId] %-5level %-70c{1.}</Property>
+        <Property name="BASIC_PATTERN">${PREFIX_PATTERN} - %notEmpty{[%X{notification.short-string}] }%msg</Property>
+        <Property name="EXCEPTION_PATTERN">%xEx{filters(${STACKTRACE_FILTER})}</Property>
+        <Property name="LOG_PATTERN">${BASIC_PATTERN}%n${EXCEPTION_PATTERN}</Property>
+        <Property name="LOGS_DIR">@profile.log.path@</Property>
+        <Property name="ROLLOVER_TIME">0 0 0 * * ?</Property>
+        <Property name="ROLLOVER_PATTERN">.%d{yyyy-MM-dd}</Property>
+
+        <!-- log files -->
+        <Property name="FILE_LOG4J">main.log</Property>
+        <Property name="FILE_ERROR">error.log</Property>
+    </Properties>
+
+    <!-- appenders -->
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+        <RollingFile name="BASE_FILE"
+                     fileName="${LOGS_DIR}/${FILE_LOG4J}"
+                     filePattern="${LOGS_DIR}/${FILE_LOG4J}${ROLLOVER_PATTERN}">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${LOGS_DIR}" maxDepth="1">
+                    <IfFileName glob="*/${FILE_LOG4J}.*"/>
+                    <IfLastModified age="60d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <CronTriggeringPolicy schedule="${ROLLOVER_TIME}" evaluateOnStartup="true"/>
+        </RollingFile>
+
+        <RollingFile name="ERROR_FILE"
+                     fileName="${LOGS_DIR}/${FILE_ERROR}"
+                     filePattern="${LOGS_DIR}/${FILE_ERROR}${ROLLOVER_PATTERN}">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${LOGS_DIR}" maxDepth="1">
+                    <IfFileName glob="*/${FILE_ERROR}.*"/>
+                    <IfLastModified age="60d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <CronTriggeringPolicy schedule="${ROLLOVER_TIME}" evaluateOnStartup="true"/>
+        </RollingFile>
+
+        <Async name="STDOUT_ASYNC">
+            <AppenderRef ref="STDOUT"/>
+        </Async>
+        <Async name="BASE_ASYNC">
+            <AppenderRef ref="BASE_FILE"/>
+        </Async>
+        <Async name="ERROR_ASYNC">
+            <AppenderRef ref="ERROR_FILE"/>
+        </Async>
+    </Appenders>
+
+    <!-- loggers -->
+    <Loggers>
+        <!-- third-party logs -->
+        <Logger name="org.hibernate" level="warn"/>
+        <!-- to prevent Hibernate from uncontrollably logging errors and warns -->
+        <!-- exceptions will still be thrown and logged on application side -->
+        <Logger name="org.hibernate.engine.jdbc.spi.SqlExceptionHelper" level="off" additivity="false"/>
+
+        <Root level="info">
+            <AppenderRef ref="BASE_ASYNC"/>
+            <AppenderRef ref="STDOUT_ASYNC"/>
+            <AppenderRef ref="ERROR_ASYNC" level="error"/>
+        </Root>
+    </Loggers>
+</Configuration>
