@@ -8,7 +8,7 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQLDialect
         auto_quote_keyword: true
   liquibase:
     change-log: classpath:db/changelog-@profile.liquibase.context@.xml

@@ -1,5 +1,6 @@
 package com.iseedead.everything_project;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Slf4j
 @SpringBootApplication
+@RequiredArgsConstructor
 public class Application {
     @Value("${spring.application.name}")
     private String applicationName;
