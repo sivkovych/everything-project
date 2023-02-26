@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 interface ItemMapper {
-    GetItem itemToGetItem(Item item);
+    GetItem from(Item item);
 
-    Item createItemToItem(CreateItem createItem);
+    Item to(CreateItem createItem);
 }

@@ -17,4 +17,8 @@ public class ItemService {
     public Item save(Item item) {
         return repository.save(item);
     }
+
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
 }
