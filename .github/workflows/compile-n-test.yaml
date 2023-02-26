@@ -19,8 +19,3 @@ jobs:
         run: mvn $MVN_CLI_OPTIONS clean compile -P$MVN_PROFILE
       - name: Test
         run: mvn $MVN_CLI_OPTIONS test -P$MVN_PROFILE
-#      - name: Build, Push and Release a Docker container to Heroku.
-#        uses: gonuit/heroku-docker-deploy@v1.3.3
-
-
-
