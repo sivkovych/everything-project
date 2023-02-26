@@ -5,7 +5,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      MVN_CLI_OPTIONS:
+      MVN_PROFILE: server
+      MVN_CLI_OPTIONS: --batch-mode -P$MVN_PROFILE
     steps:
       - name: Checkout
         uses: actions/checkout@v3
