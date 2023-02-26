@@ -1,8 +1,8 @@
-name: Test Branch
+name: Compile & Test
 on:
   - pull_request
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -14,14 +14,10 @@ jobs:
           java-version: '17'
       - name: Compile
         run: mvn --batch-mode clean compile -Pserver
-#      - name: Build, Push and Release a Docker container to Heroku.
-#        uses: gonuit/heroku-docker-deploy@v1.3.3
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: Test
         run: mvn --batch-mode test -Pserver
+#      - name: Build, Push and Release a Docker container to Heroku.
+#        uses: gonuit/heroku-docker-deploy@v1.3.3
 
 
 
