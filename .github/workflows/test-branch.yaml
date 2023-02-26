@@ -1,4 +1,4 @@
-name: Java CI
+name: Test Branch
 on:
   - pull_request
 jobs:
@@ -7,14 +7,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set Up Java 17-temurin
+      - name: Java 17 Set Up
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
       - name: Compile
         run: mvn --batch-mode clean compile -Pserver
+#      - name: Build, Push and Release a Docker container to Heroku.
+#        uses: gonuit/heroku-docker-deploy@v1.3.3
+  test:
+    runs-on: ubuntu-latest
+    steps:
       - name: Test
         run: mvn --batch-mode test -Pserver
+
 
 
