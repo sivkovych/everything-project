@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MVN_PROFILE: server
-      MVN_CLI_OPTIONS: --batch-mode -P$MVN_PROFILE
+      MVN_CLI_OPTIONS: --batch-mode
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -16,9 +16,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Compile
-        run: mvn $MVN_CLI_OPTIONS clean compile
+        run: mvn $MVN_CLI_OPTIONS clean compile -P$MVN_PROFILE
       - name: Test
-        run: mvn $MVN_CLI_OPTIONS test
+        run: mvn $MVN_CLI_OPTIONS test -P$MVN_PROFILE
 #      - name: Build, Push and Release a Docker container to Heroku.
 #        uses: gonuit/heroku-docker-deploy@v1.3.3
 
