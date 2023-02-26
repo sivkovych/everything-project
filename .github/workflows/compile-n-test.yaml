@@ -1,9 +1,11 @@
-name: Java CI
+name: Compile & Test
 on:
   - pull_request
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      MVN_CLI_OPTIONS: --batch-mode -Pserver
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -13,9 +15,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Compile
-        run: mvn --batch-mode clean compile -Pserver
+        run: mvn $MVN_CLI_OPTIONS clean compile
       - name: Test
-        run: mvn --batch-mode test -Pserver
+        run: mvn $MVN_CLI_OPTIONS test
 #      - name: Build, Push and Release a Docker container to Heroku.
 #        uses: gonuit/heroku-docker-deploy@v1.3.3
 
