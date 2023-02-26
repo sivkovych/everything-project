@@ -44,7 +44,7 @@
             <properties>
                 <profile.id>server</profile.id>
                 <profile.log.path>[[PATH_TO_THE_LOGS_DIRECTORY]]</profile.log.path>
-                <profile.liquibase.context>test</profile.liquibase.context>
+                <profile.liquibase.context>staging</profile.liquibase.context>
             </properties>
         </profile>
     </profiles>

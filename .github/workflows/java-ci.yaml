@@ -4,11 +4,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:latest
-        env:
-          MYSQL_ROOT_PASSWORD: 1234
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -18,8 +13,8 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Compile
-        run: mvn --batch-mode clean compile
+        run: mvn --batch-mode clean compile -Pserver
       - name: Test
-        run: mvn --batch-mode test
+        run: mvn --batch-mode test -Pserver
 
 

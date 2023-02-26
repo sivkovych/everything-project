@@ -11,9 +11,9 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/everything_project
-    username: root
-    password: 1234
+    url: #TBD
+    username: #TBD
+    password: #TBD
     hikari:
       data-source-properties:
         useSSL: false
@@ -26,7 +26,7 @@ spring:
         createDatabaseIfNotExist: true
   liquibase:
     enabled: true
-    drop-first: true
+    drop-first: false
 
 server:
   port: 8080
