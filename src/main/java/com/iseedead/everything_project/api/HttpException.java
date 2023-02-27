@@ -1,4 +1,4 @@
-package com.iseedead.everything_project.api.v1;
+package com.iseedead.everything_project.api;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

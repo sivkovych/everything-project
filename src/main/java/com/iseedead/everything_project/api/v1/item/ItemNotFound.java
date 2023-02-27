@@ -1,6 +1,6 @@
 package com.iseedead.everything_project.api.v1.item;
 
-import com.iseedead.everything_project.api.v1.HttpException;
+import com.iseedead.everything_project.api.HttpException;
 import org.springframework.http.HttpStatus;
 
 import java.util.function.Supplier;

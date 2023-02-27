@@ -14,6 +14,11 @@ import java.lang.annotation.Target;
 @RequestMapping("/api/v1")
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RestControllerV1 {
-    @AliasFor(annotation = RestController.class)
-    String value() default "";
+    @AliasFor(annotation = RestController.class) String value() default "";
+
+    @AliasFor(annotation = RequestMapping.class,
+              attribute = "consumes") String[] consumes() default {};
+
+    @AliasFor(annotation = RequestMapping.class,
+              attribute = "produces") String[] produces() default {};
 }

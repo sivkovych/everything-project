@@ -1,5 +1,8 @@
 package com.iseedead.everything_project;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,8 +24,20 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+    public static ObjectMapper getObjectMapper() {
+        var objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper;
+    }
+
     @Bean
     public CommandLineRunner commandLineRunner() {
         return (args) -> log.info("Started [{}] at [{}]", applicationName, LocalDateTime.now());
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return getObjectMapper();
     }
 }

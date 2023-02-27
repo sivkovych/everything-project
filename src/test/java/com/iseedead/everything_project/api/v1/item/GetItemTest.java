@@ -30,7 +30,7 @@ class GetItemTest extends ItemControllerTest {
         var getItem = getMapper().from(item);
         when(service.findBy(item.getId())).thenReturn(Optional.of(item));
         when(mapper.from(item)).thenReturn(getItem);
-        mvc.perform(get(ITEM_URL + "/" + item.getId()))
+        mvc.perform(get(ITEMS_URL + "/" + item.getId()))
                 .andExpect(status().isOk())
                 .andExpect(body().is(getItem));
     }
@@ -38,14 +38,14 @@ class GetItemTest extends ItemControllerTest {
     @Test
     public void shouldReturnNotFound_whenInvalidId() throws Exception {
         when(service.findBy(anyLong())).thenReturn(Optional.empty());
-        mvc.perform(get(ITEM_URL + "/1"))
+        mvc.perform(get(ITEMS_URL + "/1"))
                 .andExpect(status().isNotFound())
                 .andExpect(body().isError(new ItemNotFound(1L)));
     }
 
     @Test
     public void shouldReturnBadRequest_whenIdIsNotNumber() throws Exception {
-        mvc.perform(get(ITEM_URL + "/null"))
+        mvc.perform(get(ITEMS_URL + "/null"))
                 .andExpect(status().isBadRequest())
                 .andExpect(body().isBadRequest("Failed to convert value of type 'java.lang.String' to required "
                                                        + "type 'java.lang.Long'; For input string: \"null\""));
@@ -54,7 +54,7 @@ class GetItemTest extends ItemControllerTest {
     @Test
     public void shouldReturnInternalError() throws Exception {
         when(service.findBy(anyLong())).thenThrow(new RuntimeException("Something went wrong"));
-        mvc.perform(get(ITEM_URL + "/1"))
+        mvc.perform(get(ITEMS_URL + "/1"))
                 .andExpect(status().isInternalServerError())
                 .andExpect(body().isInternalServerError("Something went wrong"));
     }

@@ -24,7 +24,7 @@ class DeleteItemTest extends ItemControllerTest {
 
     @Test
     public void shouldRemoveItem_whenValidId() throws Exception {
-        mvc.perform(delete(ITEM_URL + "/" + 1L))
+        mvc.perform(delete(ITEMS_URL + "/" + 1L))
                 .andExpect(status().isOk())
                 .andExpect(body().isEmpty());
         verify(service).delete(1L);
@@ -34,14 +34,14 @@ class DeleteItemTest extends ItemControllerTest {
     public void shouldReturnNotFound_whenInvalidId() throws Exception {
         doThrow(new EmptyResultDataAccessException("No [item] entity with id 1 exists", 1)).when(service)
                 .delete(anyLong());
-        mvc.perform(delete(ITEM_URL + "/1"))
+        mvc.perform(delete(ITEMS_URL + "/1"))
                 .andExpect(status().isNotFound())
                 .andExpect(body().isNotFound("No [item] entity with id 1 exists"));
     }
 
     @Test
     public void shouldReturnBadRequest_whenIdIsNotNumber() throws Exception {
-        mvc.perform(delete(ITEM_URL + "/null"))
+        mvc.perform(delete(ITEMS_URL + "/null"))
                 .andExpect(status().isBadRequest())
                 .andExpect(body().isBadRequest("Failed to convert value of type 'java.lang.String' to required "
                                                        + "type 'java.lang.Long'; For input string: \"null\""));
@@ -51,7 +51,7 @@ class DeleteItemTest extends ItemControllerTest {
     public void shouldReturnInternalError() throws Exception {
         doThrow(new RuntimeException("Something went wrong")).when(service)
                 .delete(anyLong());
-        mvc.perform(delete(ITEM_URL + "/1"))
+        mvc.perform(delete(ITEMS_URL + "/1"))
                 .andExpect(status().isInternalServerError())
                 .andExpect(body().isInternalServerError("Something went wrong"));
     }

@@ -2,37 +2,28 @@ spring:
   jpa:
     show-sql: false
     hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       ddl-auto: validate
-  jackson:
-    serialization:
-      indent_output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: #TBD
     username: #TBD
     password: #TBD
-    hikari:
-      data-source-properties:
-        useSSL: false
-        useUnicode: true
-        socketTimeout: 1800000
-        connectTimeout: 10000
-        characterEncoding: utf8
-        allowPublicKeyRetrieval: true
-        jdbcCompliantTruncation: false
-        createDatabaseIfNotExist: true
+    hikari.data-source-properties:
+      useSSL: false
+      useUnicode: true
+      socketTimeout: 1800000
+      connectTimeout: 10000
+      characterEncoding: utf8
+      allowPublicKeyRetrieval: true
+      jdbcCompliantTruncation: false
+      createDatabaseIfNotExist: true
   liquibase:
     enabled: true
     drop-first: false
 
 server:
   port: 8080
-  servlet:
-    session:
-      timeout: 1800
-  tomcat:
-    accesslog:
-      enabled: true
+  servlet.session.timeout: 1800
+  tomcat.accesslog.enabled: true
