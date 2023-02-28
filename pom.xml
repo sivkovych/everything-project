@@ -176,6 +176,10 @@
                 <groupId>com.microsoft.azure</groupId>
                 <artifactId>azure-webapp-maven-plugin</artifactId>
                 <version>${azure-webapp-maven-plugin.version}</version>
+                <configuration>
+                    <appName>everything-project</appName>
+                    <resourceGroup>everything-project-group</resourceGroup>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>

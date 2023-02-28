@@ -25,4 +25,4 @@ jobs:
         with:
           creds: ${{ secrets.STAGING_AZURE_CREDENTIALS }}
       - name: DEPLOY
-        run: mvn com.microsoft.azure:azure-webapp-maven-plugin:$MAVEN_AZURE_PLUGIN_VERSION:deploy
+        run: mvn $MAVEN_CLI_OPTIONS com.microsoft.azure:azure-webapp-maven-plugin:$MAVEN_AZURE_PLUGIN_VERSION:deploy
