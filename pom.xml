@@ -20,6 +20,8 @@
         <java.version>17</java.version>
         <resource.path>src/main/resources</resource.path>
         <start-class>com.form.cp.Application</start-class>
+        <!-- plugins -->
+        <azure-webapp-maven-plugin.version>2.9.0</azure-webapp-maven-plugin.version>
         <!-- dependencies -->
         <spring-boot.version>${project.parent.version}</spring-boot.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
@@ -35,7 +37,6 @@
             </activation>
             <properties>
                 <profile.id>local</profile.id>
-                <profile.log.path>./logs</profile.log.path>
                 <profile.liquibase.context>local</profile.liquibase.context>
             </properties>
         </profile>
@@ -43,7 +44,6 @@
             <id>server</id>
             <properties>
                 <profile.id>server</profile.id>
-                <profile.log.path>[[PATH_TO_THE_LOGS_DIRECTORY]]</profile.log.path>
                 <profile.liquibase.context>staging</profile.liquibase.context>
             </properties>
         </profile>
@@ -171,6 +171,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.microsoft.azure</groupId>
+                <artifactId>azure-webapp-maven-plugin</artifactId>
+                <version>${azure-webapp-maven-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>

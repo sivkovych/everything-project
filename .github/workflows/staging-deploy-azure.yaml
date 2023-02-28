@@ -1,0 +1,28 @@
+name: STAGING DEPLOY
+on.push.branches:
+  - development
+env:
+  GROUP: everything-project-group
+  SERVICE_NAME: everything-project
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      MAVEN_AZURE_PLUGIN_VERSION: 2.9.0
+      MAVEN_PROFILE: server
+      MAVEN_CLI_OPTIONS: --batch-mode
+    steps:
+      - name: CHECKOUT
+        uses: actions/checkout@v3
+      - name: JAVA SET UP
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: PACKAGE
+        run: mvn $MAVEN_CLI_OPTIONS clean package -DskipTests -P$MAVEN_PROFILE
+      - name: AZURE LOGIN
+        uses: azure/login@v1
+        with.creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: DEPLOY
+        run: com.microsoft.azure:azure-webapp-maven-plugin:$MAVEN_AZURE_PLUGIN_VERSION:deploy

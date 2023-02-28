@@ -1,21 +1,21 @@
-name: Compile & Test
+name: COMPILE & TEST
 on:
   - pull_request
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      MVN_PROFILE: server
-      MVN_CLI_OPTIONS: --batch-mode
+      MAVEN_PROFILE: server
+      MAVEN_CLI_OPTIONS: --batch-mode
     steps:
-      - name: Checkout
+      - name: CHECKOUT
         uses: actions/checkout@v3
-      - name: Java Set Up
+      - name: JAVA SET UP
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Compile
-        run: mvn $MVN_CLI_OPTIONS clean compile -P$MVN_PROFILE
-      - name: Test
-        run: mvn $MVN_CLI_OPTIONS test -P$MVN_PROFILE
+      - name: COMPILE
+        run: mvn $MAVEN_CLI_OPTIONS clean compile -P$MAVEN_PROFILE
+      - name: TEST
+        run: mvn $MAVEN_CLI_OPTIONS test -P$MAVEN_PROFILE

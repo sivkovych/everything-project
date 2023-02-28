@@ -5,13 +5,11 @@
         <Property name="STACKTRACE_FILTER">
             sun.reflect,org.apache.tomcat,org.apache.coyote,org.apache.catalina,org.apache.jasper,javax.servlet.http
         </Property>
-        <Property name="TRACE_PATTERN">%equals{%X{traceId}}{}{-}/%equals{%X{spanId}}{}{-}/%equals{%X{parentId}}{}{-}
-        </Property>
         <Property name="PREFIX_PATTERN">%d{ISO8601} [Thread ID=%-3threadId] %-5level %-70c{1.}</Property>
-        <Property name="BASIC_PATTERN">${PREFIX_PATTERN} - %notEmpty{[%X{notification.short-string}] }%msg</Property>
+        <Property name="BASIC_PATTERN">${PREFIX_PATTERN} - %notEmpty{[%X{entity.to-string}] }%msg</Property>
         <Property name="EXCEPTION_PATTERN">%xEx{filters(${STACKTRACE_FILTER})}</Property>
         <Property name="LOG_PATTERN">${BASIC_PATTERN}%n${EXCEPTION_PATTERN}</Property>
-        <Property name="LOGS_DIR">@profile.log.path@</Property>
+        <Property name="LOGS_DIR">$${env:LOGS_DIR:-./logs}</Property>
         <Property name="ROLLOVER_TIME">0 0 0 * * ?</Property>
         <Property name="ROLLOVER_PATTERN">.%d{yyyy-MM-dd}</Property>
 
