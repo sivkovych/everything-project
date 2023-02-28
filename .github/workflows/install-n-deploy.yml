@@ -1,53 +1,46 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy JAR app to Azure Web App - everything-project
-
+name: Install & Deploy
 on:
   push:
     branches:
       - development
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    env:
+      MAVEN_AZURE_PLUGIN_VERSION: 2.9.0
+      MAVEN_PROFILE: server
+      MAVEN_CLI_OPTIONS: --batch-mode
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Java version
-        uses: actions/setup-java@v1
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Java Set Up
+        uses: actions/setup-java@v3
         with:
+          distribution: 'temurin'
           java-version: '17'
-
-      - name: Build with Maven
-        run: mvn clean install
-
-      - name: Upload artifact for deployment job
+      - name: Install
+        run: mvn $MAVEN_CLI_OPTIONS clean install -P$MAVEN_PROFILE
+      - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: java-app
+          name: everything-project
           path: '${{ github.workspace }}/target/*.jar'
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: 'staging'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
     steps:
-      - name: Download artifact from build job
+      - name: Download Artifact
         uses: actions/download-artifact@v2
         with:
-          name: java-app
-
-      - name: Deploy to Azure Web App
+          name: everything-project
+      - name: Deploy
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'everything-project'
-          slot-name: 'Production'
+          slot-name: 'staging'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FE17D873721D42B2B752A3437E545741 }}
           package: '*.jar'
