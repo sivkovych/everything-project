@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" />
+    <module name="everything-project" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.iseedead.everything_project.Application" />
+    <method v="2">
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="resources:resources" />
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

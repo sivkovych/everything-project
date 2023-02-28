@@ -1,0 +1,44 @@
+spring:
+  application.name: @project.build.finalName@
+  banner.location: classpath:banner.txt
+  profiles.active: @profile.id@
+  web.resources.add-mappings: false
+  mvc.throw-exception-if-no-handler-found: true
+  jpa.properties.hibernate:
+    dialect: org.hibernate.dialect.MySQLDialect
+    auto_quote_keyword: true
+  liquibase:
+    change-log: classpath:db/changelog-@profile.liquibase.context@.xml
+    contexts: @profile.liquibase.context@
+springdoc:
+  swagger-ui:
+    display-request-duration: true
+    use-root-path: true
+    default-models-expand-depth: -1
+  cache.disabled: true
+  group-configs:
+    - group: api-v1
+      display-name: API v1
+      paths-to-match: /api/v1/**
+  api-docs.groups.enabled: false
+server.tomcat.accesslog:
+  enabled: true
+  directory: ${LOGS_DIRECTORY_PATH:./logs}
+  prefix: access_log
+  suffix: .log
+  pattern: "[ACCESS] %t %A --> %a %p %r %s %S %u thread:%I sent:%bb taken:%Dms"
+  rotate: false
+management:
+  server.port: 8082
+  endpoint:
+    info.enabled: true
+    health:
+      enabled: true
+      show-details: always
+    metrics.enabled: true
+    heapdump.enabled: true
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure.include: info, health, metrics, heapdump
+      base-path: /
