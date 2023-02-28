@@ -23,6 +23,6 @@ jobs:
       - name: AZURE LOGIN
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.STAGING_AZURE_CREDENTIALS }}
       - name: DEPLOY
         run: com.microsoft.azure:azure-webapp-maven-plugin:$MAVEN_AZURE_PLUGIN_VERSION:deploy
