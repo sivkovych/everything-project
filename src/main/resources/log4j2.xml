@@ -9,7 +9,7 @@
         <Property name="BASIC_PATTERN">${PREFIX_PATTERN} - %notEmpty{[%X{entity.to-string}] }%msg</Property>
         <Property name="EXCEPTION_PATTERN">%xEx{filters(${STACKTRACE_FILTER})}</Property>
         <Property name="LOG_PATTERN">${BASIC_PATTERN}%n${EXCEPTION_PATTERN}</Property>
-        <Property name="LOGS_DIR">$${env:LOGS_DIR:-./logs}</Property>
+        <Property name="LOGS_DIR">$${env:LOGS_DIRECTORY_PATH:-./logs}</Property>
         <Property name="ROLLOVER_TIME">0 0 0 * * ?</Property>
         <Property name="ROLLOVER_PATTERN">.%d{yyyy-MM-dd}</Property>
 

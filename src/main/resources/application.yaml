@@ -23,7 +23,7 @@ springdoc:
   api-docs.groups.enabled: false
 server.tomcat.accesslog:
   enabled: true
-  directory: ${LOGS_DIR:./logs}
+  directory: ${LOGS_DIRECTORY_PATH:./logs}
   prefix: access_log
   suffix: .log
   pattern: "[ACCESS] %t %A --> %a %p %r %s %S %u thread:%I sent:%bb taken:%Dms"
