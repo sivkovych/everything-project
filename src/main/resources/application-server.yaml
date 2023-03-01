@@ -27,3 +27,4 @@ server:
   port: 8080
   servlet.session.timeout: 1800
   tomcat.accesslog.enabled: true
+  address: ${APP_SERVICE_IP}
