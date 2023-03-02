@@ -44,3 +44,4 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FE17D873721D42B2B752A3437E545741 }}
           package: '*.jar'
+          customDeployFolder: 'ROOT'
