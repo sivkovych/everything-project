@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
     env:
       MAVEN_AZURE_PLUGIN_VERSION: 2.9.0
       MAVEN_PROFILE: server
@@ -22,8 +25,6 @@ jobs:
         run: mvn $MAVEN_CLI_OPTIONS clean install -P$MAVEN_PROFILE
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
-        runs:
-          using: 'node16'
         with:
           name: everything-project
           path: '${{ github.workspace }}/target/*.jar'
@@ -36,8 +37,6 @@ jobs:
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@v2
-        runs:
-          using: 'node16'
         with:
           name: everything-project
       - name: Rename Artifact
