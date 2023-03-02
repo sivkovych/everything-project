@@ -24,7 +24,6 @@ spring:
     drop-first: false
 
 server:
-  port: 8080
   servlet.session.timeout: 1800
   tomcat.accesslog.enabled: true
   address: ${APP_SERVICE_IP:0.0.0.0}
