@@ -36,6 +36,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: everything-project
+      - name: Rename Artifact
+        run: mv everything-project.jar app.jar
       - name: Deploy
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
