@@ -1,6 +1,0 @@
-spring:
-  cloud:
-    config:
-      import-check:
-        # noinspection SpringBootApplicationYaml
-        enabled: false

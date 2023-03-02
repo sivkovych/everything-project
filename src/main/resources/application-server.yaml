@@ -26,4 +26,3 @@ spring:
 server:
   servlet.session.timeout: 1800
   tomcat.accesslog.enabled: true
-  address: ${APP_SERVICE_IP:0.0.0.0}
