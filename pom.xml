@@ -19,7 +19,6 @@
         <!-- system -->
         <java.version>17</java.version>
         <resource.path>src/main/resources</resource.path>
-        <start-class>com.iseedead.everything_project.Application</start-class>
         <!-- dependencies -->
         <spring-cloud-gcp-dependencies.version>4.1.1</spring-cloud-gcp-dependencies.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
@@ -196,6 +195,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.iseedead.everything_project.Application</mainClass>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
