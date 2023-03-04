@@ -7,10 +7,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      GCP_MYSQL_DATABASE_NAME: ${{ secrets.GCP_MYSQL_DATABASE_NAME }}
-      GCP_MYSQL_INSTANCE_CONNECTION_NAME: ${{ secrets.GCP_MYSQL_INSTANCE_CONNECTION_NAME }}
-      GCP_MYSQL_DATABASE_USERNAME: ${{ secrets.GCP_MYSQL_DATABASE_USERNAME }}
-      GCP_MYSQL_DATABASE_PASSWORD: ${{ secrets.GCP_MYSQL_DATABASE_PASSWORD }}
       MAVEN_PROFILE: server
       MAVEN_CLI_OPTIONS: --batch-mode
     steps:
@@ -24,7 +20,7 @@ jobs:
       - name: Package
         run: mvn $MAVEN_CLI_OPTIONS clean package -P$MAVEN_PROFILE
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: everything-project
           path: '${{ github.workspace }}/target/*'
@@ -33,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: everything-project
       - name: Inject Data
@@ -42,5 +38,3 @@ jobs:
           sed -i -r 's|<GCP_MYSQL_INSTANCE_CONNECTION_NAME>|${{ secrets.GCP_MYSQL_INSTANCE_CONNECTION_NAME }}|g' classes/application-server.yaml
           sed -i -r 's|<GCP_MYSQL_DATABASE_USERNAME>|${{ secrets.GCP_MYSQL_DATABASE_USERNAME }}|g' classes/application-server.yaml
           sed -i -r 's|<GCP_MYSQL_DATABASE_PASSWORD>|${{ secrets.GCP_MYSQL_DATABASE_PASSWORD }}|g' classes/application-server.yaml
-      - name: Debug 2
-        run: cat classes/application-server.yaml
