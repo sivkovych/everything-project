@@ -188,6 +188,7 @@
                     <include>application.yaml</include>
                     <include>application-${profile.id}.yaml</include>
                     <include>log4j2.xml</include>
+                    <include>app.yaml</include>
                 </includes>
             </resource>
         </resources>
@@ -210,29 +211,6 @@
                         </fileset>
                     </filesets>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>regex-properties</id>
-                        <goals>
-                            <goal>regex-properties</goal>
-                        </goals>
-                        <configuration>
-                            <regexPropertySettings>
-                                <regexPropertySetting>
-                                    <name>app.deploy.version</name>
-                                    <value>${project.version}</value>
-                                    <regex>([0-9]+)\.([0-9]+)\.([0-9]+)</regex>
-                                    <replacement>v$1-$2-$3</replacement>
-                                    <failIfNoMatch>true</failIfNoMatch>
-                                </regexPropertySetting>
-                            </regexPropertySettings>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.liquibase</groupId>
