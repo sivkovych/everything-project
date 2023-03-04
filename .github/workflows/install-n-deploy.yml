@@ -21,7 +21,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Install
+      - name: Package
         run: mvn $MAVEN_CLI_OPTIONS clean package -P$MAVEN_PROFILE
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
@@ -38,9 +38,11 @@ jobs:
         with:
           name: everything-project
           node-version: '16.x'
+      - name: Debug 1
+        run: ls -la
       - name: Inject Data
         run: echo "$(cat target/classes/application-server.yaml | sed -r 's|<(.+)>|$\1|g')" > target/classes/application-server.yaml
-      - name: Debug
+      - name: Debug 2
         run: ls -la target
       - name: Debug 2
         run: cat target/classes/application-server.yaml
