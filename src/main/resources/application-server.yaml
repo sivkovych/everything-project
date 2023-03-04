@@ -7,9 +7,9 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${AZURE_MYSQL_URL}
-    username: ${AZURE_MYSQL_USER}
-    password: ${AZURE_MYSQL_PASSWORD}
+    url: jdbc:mysql:///<GCP_MYSQL_DATABASE_NAME>?cloudSqlInstance=<GCP_MYSQL_INSTANCE_CONNECTION_NAME>&socketFactory=com.google.cloud.sql.mysql.SocketFactory
+    username: <GCP_MYSQL_DATABASE_USERNAME>
+    password: <GCP_MYSQL_DATABASE_PASSWORD>
     hikari.data-source-properties:
       useSSL: true
       useUnicode: true
@@ -22,7 +22,11 @@ spring:
   liquibase:
     enabled: true
     drop-first: false
+  cloud:
+    gcp.sql:
+      enabled: false
 
 server:
+  port: 8080
   servlet.session.timeout: 1800
   tomcat.accesslog.enabled: true

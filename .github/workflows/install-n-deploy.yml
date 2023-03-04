@@ -6,11 +6,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 16.x ]
     env:
-      MAVEN_AZURE_PLUGIN_VERSION: 2.9.0
+      GCP_MYSQL_DATABASE_NAME: ${{ secrets.GCP_MYSQL_DATABASE_NAME }}
+      GCP_MYSQL_INSTANCE_CONNECTION_NAME: ${{ secrets.GCP_MYSQL_INSTANCE_CONNECTION_NAME }}
+      GCP_MYSQL_DATABASE_USERNAME: ${{ secrets.GCP_MYSQL_DATABASE_USERNAME }}
+      GCP_MYSQL_DATABASE_PASSWORD: ${{ secrets.GCP_MYSQL_DATABASE_PASSWORD }}
       MAVEN_PROFILE: server
       MAVEN_CLI_OPTIONS: --batch-mode
     steps:
@@ -22,30 +22,25 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Install
-        run: mvn $MAVEN_CLI_OPTIONS clean install -P$MAVEN_PROFILE
+        run: mvn $MAVEN_CLI_OPTIONS clean package -P$MAVEN_PROFILE
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: everything-project
-          path: '${{ github.workspace }}/target/*.jar'
+          path: '${{ github.workspace }}/target/*'
+          node-version: '16.x'
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    environment:
-      name: 'staging'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@v2
         with:
           name: everything-project
-      - name: Rename Artifact
-        run: mv everything-project.jar app.jar
-      - name: Deploy
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'everything-project'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FE17D873721D42B2B752A3437E545741 }}
-          package: 'app.jar'
+          node-version: '16.x'
+      - name: Inject Data
+        run: echo "$(cat target/classes/application-server.yaml | sed -r 's|<(.+)>|$\1|g')" > target/classes/application-server.yaml
+      - name: Debug
+        run: ls -la target
+      - name: Debug 2
+        run: cat target/classes/application-server.yaml
