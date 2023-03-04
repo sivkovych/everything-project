@@ -1,4 +1,5 @@
 runtime: java
+entrypoint: java -Xmx64m -jar everything-project.jar
 env: flex
 runtime_config:
   operating_system: "ubuntu22"
