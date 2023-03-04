@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - feature/configure-deployment
+strategy:
+  matrix:
+    os: [ ubuntu-latest ]
+    node-version: [ 16.x ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,21 +32,23 @@ jobs:
         with:
           name: everything-project
           path: '${{ github.workspace }}/target/*'
-          node-version: '16.x'
+          node-version: ${{ matrix.node-version }}
   deploy:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        node-version: [ 16.x ]
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@v2
         with:
           name: everything-project
-          node-version: '16.x'
+          node-version: ${{ matrix.node-version }}
       - name: Debug 1
         run: ls -la
       - name: Inject Data
-        run: echo "$(cat target/classes/application-server.yaml | sed -r 's|<(.+)>|$\1|g')" > target/classes/application-server.yaml
+        run: echo "$(cat classes/application-server.yaml | sed -r 's|<(.+)>|$\1|g')" > classes/application-server.yaml
       - name: Debug 2
-        run: ls -la target
-      - name: Debug 2
-        run: cat target/classes/application-server.yaml
+        run: cat classes/application-server.yaml
