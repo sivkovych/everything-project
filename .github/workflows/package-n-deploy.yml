@@ -21,7 +21,9 @@ jobs:
         run: |
           echo $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed -e 's|\.|-|g')
-          echo "PROJECT_VERSION=v$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed -e 's|\.|-|g')" >> $GITHUB_ENV
+          echo v$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed -e 's|\.|-|g') > version.md
+          cat version.md
+          echo "PROJECT_VERSION=$(cat version.md)" >> $GITHUB_ENV
           echo "VERSION: ${{ env.PROJECT_VERSION }}"
       - name: Package
         run: mvn $MAVEN_CLI_OPTIONS clean package -P$MAVEN_PROFILE
