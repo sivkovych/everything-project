@@ -19,8 +19,10 @@ jobs:
           java-version: '17'
       - name: Set Version
         run: |
-          echo "project-version=v$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed -e 's|\.|-|g')" >> $GITHUB_ENV
-          echo "VERSION: ${{ env.project-version }}"
+          echo $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed -e 's|\.|-|g')
+          echo "PROJECT_VERSION=v$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed -e 's|\.|-|g')" >> $GITHUB_ENV
+          echo "VERSION: ${{ env.PROJECT_VERSION }}"
       - name: Package
         run: mvn $MAVEN_CLI_OPTIONS clean package -P$MAVEN_PROFILE
       - name: Upload Artifact
@@ -44,13 +46,13 @@ jobs:
           sed -i -r 's|<GCP_MYSQL_INSTANCE_CONNECTION_NAME>|${{ secrets.GCP_MYSQL_INSTANCE_CONNECTION_NAME }}|g' classes/application-server.yaml
           sed -i -r 's|<GCP_MYSQL_DATABASE_USERNAME>|${{ secrets.GCP_MYSQL_DATABASE_USERNAME }}|g' classes/application-server.yaml
           sed -i -r 's|<GCP_MYSQL_DATABASE_PASSWORD>|${{ secrets.GCP_MYSQL_DATABASE_PASSWORD }}|g' classes/application-server.yaml
-      - name: GCP Authentication
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }}'
-      - name: GCP Deploy
-        uses: google-github-actions/deploy-appengine@v1
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          version: ${{ env.project-version }}
-          flags: '--verbosity=debug'
+#      - name: GCP Authentication
+#        uses: google-github-actions/auth@v1
+#        with:
+#          credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }}
+#      - name: GCP Deploy
+#        uses: google-github-actions/deploy-appengine@v1
+#        with:
+#          project_id: ${{ secrets.GCP_PROJECT_ID }}
+#          version: ${{ env.project-version }}
+#          flags: '--verbosity=debug'
