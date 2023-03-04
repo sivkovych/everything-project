@@ -44,15 +44,13 @@ jobs:
           sed -i -r 's|<GCP_MYSQL_DATABASE_PASSWORD>|${{ secrets.GCP_MYSQL_DATABASE_PASSWORD }}|g' classes/application-server.yaml
       - name: Set Version
         run: echo "PROJECT_VERSION=$(cat version.md)" >> $GITHUB_ENV
-      - name: Get Version
-        run: echo "${{ env.PROJECT_VERSION }}"
-#      - name: GCP Authentication
-#        uses: google-github-actions/auth@v1
-#        with:
-#          credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }}
-#      - name: GCP Deploy
-#        uses: google-github-actions/deploy-appengine@v1
-#        with:
-#          project_id: ${{ secrets.GCP_PROJECT_ID }}
-#          version: ${{ env.project-version }}
-#          flags: '--verbosity=debug'
+      - name: GCP Authentication
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }}
+      - name: GCP Deploy
+        uses: google-github-actions/deploy-appengine@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          version: ${{ env.PROJECT_VERSION }}
+          flags: '--verbosity=debug'
