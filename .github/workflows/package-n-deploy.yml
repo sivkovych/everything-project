@@ -51,8 +51,7 @@ jobs:
       - name: GCP Deploy
         uses: google-github-actions/deploy-appengine@v1
         with:
-          deliverables:
-            - classes/app.yaml
+          deliverables: classes/app.yaml
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           version: ${{ env.PROJECT_VERSION }}
           flags: '--verbosity=debug'
