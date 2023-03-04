@@ -17,6 +17,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+      - name: Set Version
+        run: |
+          echo "project-version=v$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed -e 's|\.|-|g')" >> $GITHUB_ENV
+          echo "VERSION: ${{ env.project-version }}"
       - name: Package
         run: mvn $MAVEN_CLI_OPTIONS clean package -P$MAVEN_PROFILE
       - name: Upload Artifact
@@ -32,10 +36,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: everything-project
-      - name: Set Version
-        run: |
-          echo "project-version=v$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed -e 's|\.|-|g')" >> $GITHUB_ENV
-          echo "VERSION: ${{ env.project-version }}"
         # Workaround via injecting secrets into application-server.yaml
         # 'cause I can't get app to work with Google Secret Manager
       - name: Inject Secrets (workaround)
