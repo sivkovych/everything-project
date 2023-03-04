@@ -19,14 +19,14 @@ jobs:
           java-version: '17'
       - name: Create Version File
         run: |
-          echo v$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed -e 's|\.|-|g') > version.md
+          echo v$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed -e 's|\.|-|g') > ${{ github.workspace }}/target/version.md
       - name: Package
         run: mvn $MAVEN_CLI_OPTIONS clean package -P$MAVEN_PROFILE
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: everything-project
-          path: '${{ github.workspace }}/target/*'
+          path: ${{ github.workspace }}/target/*
   deploy:
     needs: package
     runs-on: ubuntu-latest
