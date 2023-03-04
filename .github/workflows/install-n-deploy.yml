@@ -49,6 +49,6 @@ jobs:
       - name: Debug 1
         run: ls -la
       - name: Inject Data
-        run: sed -i -r 's|<GCP_MYSQL_DATABASE_NAME>|${{ secrets.GCP_MYSQL_DATABASE_NAME }}|g')" classes/application-server.yaml
+        run: sed -i -r 's|<GCP_MYSQL_DATABASE_NAME>|${{ secrets.GCP_MYSQL_DATABASE_NAME }}|g' classes/application-server.yaml
       - name: Debug 2
         run: cat classes/application-server.yaml
