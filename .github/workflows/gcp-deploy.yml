@@ -2,7 +2,7 @@ name: GCP Deploy
 on:
   push:
     branches:
-      - development
+      - feature/configure-deployment
 jobs:
   deploy:
     runs-on: ubuntu-latest
