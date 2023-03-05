@@ -2,7 +2,7 @@ name: GCP Deploy
 on:
   push:
     branches:
-      - feature/configure-deployment
+      - development
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -23,8 +23,8 @@ jobs:
       - name: Create Version File
         run: |
           echo v$(mvn -q help:evaluate \
-            -Dexpression=project.version \
-            -DforceStdout | sed -e 's|\.|-|g') > ${{ github.workspace }}/target/version.md
+          -Dexpression=project.version \
+          -DforceStdout | sed -e 's|\.|-|g') > ${{ github.workspace }}/target/version.md
         # Workaround
         # Injecting GitHub secrets into application-server.yaml instead of using Google Secret Manager
         # 'cause I can't get the app to parse them in application*.yaml files
