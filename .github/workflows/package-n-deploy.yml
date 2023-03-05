@@ -20,23 +20,37 @@ jobs:
       - name: Package
         run: mvn $MAVEN_CLI_OPTIONS clean package -P$MAVEN_PROFILE
       - name: Create Version File
-        run: echo v$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed -e 's|\.|-|g') > ${{ github.workspace }}/target/version.md
+        run: echo v$(mvn -q help:evaluate \
+          -Dexpression=project.version \
+          -DforceStdout | sed -e 's|\.|-|g') > ${{ github.workspace }}/target/version.md
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: everything-project
-          path: ${{ github.workspace }}/target/*
+          path: |
+            ${{ github.workspace }}/target/*
+            pom.xml
   deploy:
     needs: package
     runs-on: ubuntu-latest
+    env:
+      MAVEN_PROFILE: server
+      MAVEN_CLI_OPTIONS: --batch-mode
     steps:
+      - name: Java Set Up
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
           name: everything-project
-        # Workaround via injecting secrets into application-server.yaml
-        # 'cause I can't get app to work with Google Secret Manager
-      - name: Inject Secrets (workaround)
+        # Workaround
+        # Injecting GitHub secrets into application-server.yaml instead of using Google Secret Manager
+        # 'cause I can't get the app to parse them in application*.yaml files
+        # (sm:// does not work)
+      - name: Inject Secrets
         run: |
           sed -i -r 's|<GCP_MYSQL_DATABASE_NAME>|${{ secrets.GCP_MYSQL_DATABASE_NAME }}|g' classes/application-server.yaml
           sed -i -r 's|<GCP_MYSQL_INSTANCE_CONNECTION_NAME>|${{ secrets.GCP_MYSQL_INSTANCE_CONNECTION_NAME }}|g' classes/application-server.yaml
@@ -49,8 +63,7 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }}
       - name: GCP Deploy
-        uses: google-github-actions/deploy-appengine@v1
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          version: ${{ env.PROJECT_VERSION }}
-          flags: '--verbosity=debug'
+        run: mvn $MAVEN_CLI_OPTIONS appengine:deploy \
+          -Dapp.deploy.version=${{ env.PROJECT_VERSION }} \
+          -Dapp.deploy.projectId=${{ secrets.GCP_PROJECT_ID }} \
+          -P$MAVEN_PROFILE

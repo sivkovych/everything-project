@@ -6,7 +6,7 @@
     <groupId>com.iseedead</groupId>
     <artifactId>everything-project</artifactId>
     <name>${project.artifactId}</name>
-    <version>0.1.8</version>
+    <version>0.1.9</version>
     <packaging>jar</packaging>
 
     <parent>
@@ -19,6 +19,8 @@
         <!-- system -->
         <java.version>17</java.version>
         <resource.path>src/main/resources</resource.path>
+        <!-- plugins -->
+        <appengine-maven-plugin.version>2.4.4</appengine-maven-plugin.version>
         <!-- dependencies -->
         <spring-cloud-gcp-dependencies.version>4.1.1</spring-cloud-gcp-dependencies.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
@@ -189,13 +191,6 @@
                     <include>log4j2.xml</include>
                 </includes>
             </resource>
-            <resource>
-                <directory>${resource.path}</directory>
-                <targetPath>${project.build.directory}</targetPath>
-                <includes>
-                    <include>app.yaml</include>
-                </includes>
-            </resource>
         </resources>
         <plugins>
             <plugin>
@@ -218,6 +213,14 @@
                             <followSymlinks>false</followSymlinks>
                         </fileset>
                     </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>appengine-maven-plugin</artifactId>
+                <version>${appengine-maven-plugin.version}</version>
+                <configuration>
+                    <verbosity>debug</verbosity>
                 </configuration>
             </plugin>
             <plugin>
