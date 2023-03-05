@@ -1,4 +1,4 @@
-name: Compile & Test
+name: Compile
 on:
   - pull_request
 jobs:
@@ -22,18 +22,3 @@ jobs:
         with:
           name: everything-project
           path: '${{ github.workspace }}/target/*'
-  test:
-    needs: compile
-    runs-on: ubuntu-latest
-    steps:
-      - name: Java Set Up
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: everything-project
-      - name: Test
-        run: mvn $MAVEN_CLI_OPTIONS test -P$MAVEN_PROFILE

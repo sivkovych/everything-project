@@ -1,0 +1,22 @@
+name: Test
+on:
+  - pull_request
+jobs:
+  test:
+    needs: compile
+    runs-on: ubuntu-latest
+    env:
+      MAVEN_PROFILE: server
+      MAVEN_CLI_OPTIONS: --batch-mode
+    steps:
+      - name: Java Set Up
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: everything-project
+      - name: Test
+        run: mvn $MAVEN_CLI_OPTIONS test -P$MAVEN_PROFILE
