@@ -36,6 +36,7 @@ jobs:
     env:
       MAVEN_PROFILE: server
       MAVEN_CLI_OPTIONS: --batch-mode
+      APP_SETTINGS_FILE: target/classes/application-server.yaml
     steps:
       - name: Java Set Up
         uses: actions/setup-java@v3
@@ -52,10 +53,10 @@ jobs:
         # (sm:// does not work)
       - name: Inject Secrets
         run: |
-          sed -i -r 's|<GCP_MYSQL_DATABASE_NAME>|${{ secrets.GCP_MYSQL_DATABASE_NAME }}|g' classes/application-server.yaml
-          sed -i -r 's|<GCP_MYSQL_INSTANCE_CONNECTION_NAME>|${{ secrets.GCP_MYSQL_INSTANCE_CONNECTION_NAME }}|g' classes/application-server.yaml
-          sed -i -r 's|<GCP_MYSQL_DATABASE_USERNAME>|${{ secrets.GCP_MYSQL_DATABASE_USERNAME }}|g' classes/application-server.yaml
-          sed -i -r 's|<GCP_MYSQL_DATABASE_PASSWORD>|${{ secrets.GCP_MYSQL_DATABASE_PASSWORD }}|g' classes/application-server.yaml
+          sed -i -r 's|<GCP_MYSQL_DATABASE_NAME>|${{ secrets.GCP_MYSQL_DATABASE_NAME }}|g' $APP_SETTINGS_FILE
+          sed -i -r 's|<GCP_MYSQL_INSTANCE_CONNECTION_NAME>|${{ secrets.GCP_MYSQL_INSTANCE_CONNECTION_NAME }}|g' $APP_SETTINGS_FILE
+          sed -i -r 's|<GCP_MYSQL_DATABASE_USERNAME>|${{ secrets.GCP_MYSQL_DATABASE_USERNAME }}|g' $APP_SETTINGS_FILE
+          sed -i -r 's|<GCP_MYSQL_DATABASE_PASSWORD>|${{ secrets.GCP_MYSQL_DATABASE_PASSWORD }}|g' $APP_SETTINGS_FILE
       - name: Set Version
         run: echo "PROJECT_VERSION=$(cat version.md)" >> $GITHUB_ENV
       - name: GCP Authentication
