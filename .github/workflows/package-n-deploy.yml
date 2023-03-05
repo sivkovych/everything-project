@@ -64,7 +64,4 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }}
       - name: GCP Deploy
-        run: mvn $MAVEN_CLI_OPTIONS appengine:deploy \
-          -Dapp.deploy.version=${{ env.PROJECT_VERSION }} \
-          -Dapp.deploy.projectId=${{ secrets.GCP_PROJECT_ID }} \
-          -P$MAVEN_PROFILE
+        run: mvn $MAVEN_CLI_OPTIONS appengine:deploy -Dapp.deploy.version=${{ env.PROJECT_VERSION }} -Dapp.deploy.projectId=${{ secrets.GCP_PROJECT_ID }} -P$MAVEN_PROFILE
