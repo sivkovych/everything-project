@@ -1,0 +1,18 @@
+runtime: java
+env: flex
+runtime_config:
+  operating_system: "ubuntu22"
+  runtime_version: "17"
+env_variables:
+  SPRING_PROFILES_ACTIVE: "server"
+handlers:
+  - url: /.*
+    secure: always
+    script: auto
+    redirect_http_response_code: 301
+manual_scaling:
+  instances: 1
+resources:
+  cpu: 2
+  memory_gb: 2
+  disk_size_gb: 10

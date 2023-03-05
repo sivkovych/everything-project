@@ -7,9 +7,9 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${AZURE_MYSQL_URL}
-    username: ${AZURE_MYSQL_USER}
-    password: ${AZURE_MYSQL_PASSWORD}
+    url: jdbc:mysql:///everything-project-db?cloudSqlInstance=everything-project-379518:europe-west6:everything-project-db-instance&socketFactory=com.google.cloud.sql.mysql.SocketFactory
+    username: app
+    password: R]B%F*68J9Eq."i1
     hikari.data-source-properties:
       useSSL: true
       useUnicode: true
@@ -22,6 +22,9 @@ spring:
   liquibase:
     enabled: true
     drop-first: false
+  cloud:
+    gcp.sql:
+      enabled: false
 
 server:
   port: 8080

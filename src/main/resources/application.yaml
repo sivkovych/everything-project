@@ -19,8 +19,10 @@ springdoc:
   group-configs:
     - group: api-v1
       display-name: API v1
-      paths-to-match: /api/v1/**
-  api-docs.groups.enabled: false
+      paths-to-match:
+        - /api/v1/**
+        - /actuator/*
+  show-actuator: true
 server.tomcat.accesslog:
   enabled: true
   directory: ${LOGS_DIRECTORY_PATH:./logs}
@@ -29,7 +31,6 @@ server.tomcat.accesslog:
   pattern: "[ACCESS] %t %A --> %a %p %r %s %S %u thread:%I sent:%bb taken:%Dms"
   rotate: false
 management:
-  server.port: 8082
   endpoint:
     info.enabled: true
     health:
@@ -41,4 +42,4 @@ management:
     enabled-by-default: false
     web:
       exposure.include: info, health, metrics, heapdump
-      base-path: /
+      base-path: /actuator
