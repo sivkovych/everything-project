@@ -21,23 +21,17 @@ jobs:
         run: mvn $MAVEN_CLI_OPTIONS clean package -P$MAVEN_PROFILE
       - name: Create Version File
         run: |
-          echo v$(mvn -q help:evaluate \
-            -Dexpression=project.version \
-            -DforceStdout | sed -e 's|\.|-|g') > ${{ github.workspace }}/target/version.md
+          echo v$(mvn -q help:evaluate -Dexpression=project.version -DforceStdout | sed -e 's|\.|-|g') > ${{ github.workspace }}/target/version.md
         # Workaround
         # Injecting GitHub secrets into application-server.yaml instead of using Google Secret Manager
         # 'cause I can't get the app to parse them in application*.yaml files
         # (sm:// does not work)
       - name: Inject Secrets
         run: |
-          sed -i -r 's|<GCP_MYSQL_DATABASE_NAME>|${{ secrets.GCP_MYSQL_DATABASE_NAME }}|g' \
-          $APP_SETTINGS_FILE
-          sed -i -r 's|<GCP_MYSQL_INSTANCE_CONNECTION_NAME>|${{ secrets.GCP_MYSQL_INSTANCE_CONNECTION_NAME }}|g' \
-          $APP_SETTINGS_FILE
-          sed -i -r 's|<GCP_MYSQL_DATABASE_USERNAME>|${{ secrets.GCP_MYSQL_DATABASE_USERNAME }}|g' \
-          $APP_SETTINGS_FILE
-          sed -i -r 's|<GCP_MYSQL_DATABASE_PASSWORD>|${{ secrets.GCP_MYSQL_DATABASE_PASSWORD }}|g' \
-          $APP_SETTINGS_FILE
+          sed -i -r 's|<GCP_MYSQL_DATABASE_NAME>|${{ secrets.GCP_MYSQL_DATABASE_NAME }}|g' $APP_SETTINGS_FILE
+          sed -i -r 's|<GCP_MYSQL_INSTANCE_CONNECTION_NAME>|${{ secrets.GCP_MYSQL_INSTANCE_CONNECTION_NAME }}|g' $APP_SETTINGS_FILE
+          sed -i -r 's|<GCP_MYSQL_DATABASE_USERNAME>|${{ secrets.GCP_MYSQL_DATABASE_USERNAME }}|g' $APP_SETTINGS_FILE
+          sed -i -r 's|<GCP_MYSQL_DATABASE_PASSWORD>|${{ secrets.GCP_MYSQL_DATABASE_PASSWORD }}|g' $APP_SETTINGS_FILE
       - name: Set Version
         run: echo "PROJECT_VERSION=$(cat ${{ github.workspace }}/target/version.md)" >> $GITHUB_ENV
       - name: GCP Authentication
@@ -46,7 +40,4 @@ jobs:
           credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }}
       - name: GCP Deploy
         run: |
-          mvn $MAVEN_CLI_OPTIONS appengine:deploy \
-          -Dapp.deploy.version=${{ env.PROJECT_VERSION }} \
-          -Dapp.deploy.projectId=${{ secrets.GCP_PROJECT_ID }} \
-          -P$MAVEN_PROFILE
+          mvn $MAVEN_CLI_OPTIONS appengine:deploy -Dapp.deploy.version=${{ env.PROJECT_VERSION }} -Dapp.deploy.projectId=${{ secrets.GCP_PROJECT_ID }} -P$MAVEN_PROFILE
