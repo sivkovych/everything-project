@@ -6,7 +6,7 @@
     <groupId>com.iseedead</groupId>
     <artifactId>everything-project</artifactId>
     <name>${project.artifactId}</name>
-    <version>0.1.9</version>
+    <version>0.1.10</version>
     <packaging>jar</packaging>
 
     <parent>
@@ -153,6 +153,11 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
         <!-- development tools -->
