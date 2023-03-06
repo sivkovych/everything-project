@@ -17,18 +17,15 @@ import java.time.LocalDateTime;
 @SpringBootApplication
 @RequiredArgsConstructor
 public class Application {
-    @Value("${spring.application.name}")
-    private String applicationName;
+    @Value("${spring.application.name}") private String applicationName;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
     public static ObjectMapper getObjectMapper() {
-        var objectMapper = new ObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        objectMapper.registerModule(new JavaTimeModule());
-        return objectMapper;
+        return new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT)
+                .registerModule(new JavaTimeModule());
     }
 
     @Bean

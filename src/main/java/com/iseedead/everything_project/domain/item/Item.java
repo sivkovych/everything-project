@@ -25,13 +25,12 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @Table(name = "items")
-@ToString(onlyExplicitlyIncluded = true)
+@ToString(exclude = {"data"})
 @EntityListeners(AuditingEntityListener.class)
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ToString.Exclude
     @Convert(converter = MapConverter.class)
     @Column(name = "data",
             columnDefinition = "json")

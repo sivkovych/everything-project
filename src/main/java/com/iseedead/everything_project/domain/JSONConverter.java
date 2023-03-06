@@ -12,27 +12,33 @@ import lombok.extern.slf4j.Slf4j;
 @Converter
 @RequiredArgsConstructor
 public abstract class JSONConverter<T> implements AttributeConverter<T, String> {
+    private static final String EMPTY_JSON = "{ }";
     private final ObjectMapper objectMapper;
 
     @Override
     public String convertToDatabaseColumn(T attribute) {
         try {
+            if (attribute == null) {
+                return EMPTY_JSON;
+            }
             return objectMapper.writeValueAsString(attribute);
         } catch (JsonProcessingException jsonProcessingException) {
             log.error("Failed to write JSON attribute to a database", jsonProcessingException);
-            return null;
+            return EMPTY_JSON;
         }
     }
 
     @Override
     public T convertToEntityAttribute(String dbData) {
         try {
-            return dbData == null
-                    ? null
+            return dbData == null || dbData.isEmpty() || dbData.isBlank()
+                    ? getNullValue()
                     : objectMapper.readValue(dbData, new TypeReference<>() {});
         } catch (JsonProcessingException jsonProcessingException) {
             log.error("Failed to read JSON attribute from a database", jsonProcessingException);
-            return null;
+            return getNullValue();
         }
     }
+
+    protected abstract T getNullValue();
 }
