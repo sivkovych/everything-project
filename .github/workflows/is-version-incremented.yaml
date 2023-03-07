@@ -14,3 +14,4 @@ jobs:
           git diff --name-only
           echo ${{ github.event.pull_request.base.ref }}
           echo ${{ github.event.pull_request.head.ref }}
+          more $GITHUB_EVENT_PATH
