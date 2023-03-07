@@ -1,11 +1,11 @@
 name: Is Version Incremented
-on:
-  - pull_request
-
 #on:
-#  push:
-#    branches:
-#      - feature/is-version-incremented-action
+#  - pull_request
+
+on:
+  push:
+    branches:
+      - feature/is-version-incremented-action
 jobs:
   is-version-incremented:
     runs-on: ubuntu-latest
