@@ -14,8 +14,8 @@ jobs:
         uses: actions/checkout@v3
       - name: Git Diff
         run: |
-          chmod +x ./check-versions.sh
-          ./check-versions.sh
+          chmod +x .github/workflows/check-versions.sh
+          ./.github/workflows/check-versions.sh
 
 
 #          echo ${{ github.event.pull_request.base.ref }}
