@@ -8,4 +8,5 @@
         <tagDatabase tag="base-schema"/>
     </changeSet>
     <include file="db/changelog/schema/create_table_items.xml"/>
+    <include file="db/changelog/schema/create_table_system_properties.xml"/>
 </databaseChangeLog>
