@@ -17,15 +17,11 @@ import static org.mockito.Mockito.when;
 
 class ItemServiceTest {
     @Test
-    public void shouldReturnEntity_whenIdIsValid() {
+    public void shouldReturnEntity_whenExists() {
         var item = new Item();
         item.setData(Map.of("key", "value"));
         var repository = mock(ItemRepository.class);
-        when(repository.findById(1L)).then(invocation -> {
-            item.setId(1L);
-            item.setCreatedAt(LocalDateTime.now());
-            return Optional.of(item);
-        });
+        when(repository.findById(1L)).thenReturn(Optional.of(item));
         var found = new ItemService(repository).findBy(1L);
         assertNotNull(found);
         assertTrue(found.isPresent());
@@ -33,7 +29,7 @@ class ItemServiceTest {
     }
 
     @Test
-    public void shouldReturnEmpty_whenIdIsNotValid() {
+    public void shouldReturnEmpty_whenDoesNotExist() {
         var repository = mock(ItemRepository.class);
         when(repository.findById(anyLong())).thenReturn(Optional.empty());
         var found = new ItemService(repository).findBy(1L);

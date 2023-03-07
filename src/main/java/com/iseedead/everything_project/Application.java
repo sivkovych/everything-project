@@ -17,7 +17,8 @@ import java.time.LocalDateTime;
 @SpringBootApplication
 @RequiredArgsConstructor
 public class Application {
-    @Value("${spring.application.name}") private String applicationName;
+    @Value("${spring.application.name}")
+    private String applicationName;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
