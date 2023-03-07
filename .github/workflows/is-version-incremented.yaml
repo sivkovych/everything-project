@@ -11,4 +11,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Git Diff
         run: |
-          echo $(git diff --name-only)
+          git diff --name-only
+          echo ${{ github.event.pull_request.base.ref }}
+          echo ${{ github.event.pull_request.head.ref }}
