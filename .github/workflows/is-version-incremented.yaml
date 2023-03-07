@@ -16,7 +16,7 @@ jobs:
         run: |
           base="${{ github.event.pull_request.base.ref }}"
           head="${{ github.event.pull_request.head.ref }}"
-          git fetch origin/${base}
+          git fetch origin ${base}:refs/remotes/origin/${base}
           git diff --name-only origin/${base}
 #          echo ${{ github.event.pull_request.base.ref }}
 #          echo ${{ github.event.pull_request.head.ref }}
