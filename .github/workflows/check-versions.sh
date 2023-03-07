@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-base="${{ github.event.pull_request.base.ref }}"
+base=$1
 git fetch origin "${base}":refs/remotes/origin/"${base}"
 
 path=$(git diff --name-only origin/"${base}" | grep pom.xml)

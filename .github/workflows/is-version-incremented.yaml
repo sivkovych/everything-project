@@ -15,7 +15,7 @@ jobs:
       - name: Git Diff
         run: |
           chmod +x .github/workflows/check-versions.sh
-          ./.github/workflows/check-versions.sh
+          ./.github/workflows/check-versions.sh ${{ github.event.pull_request.base.ref }}
 
 
 #          echo ${{ github.event.pull_request.base.ref }}
