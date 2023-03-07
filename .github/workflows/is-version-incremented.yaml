@@ -16,7 +16,7 @@ jobs:
         run: |
           base="${{ github.event.pull_request.base.ref }}"
           head="${{ github.event.pull_request.head.ref }}"
-          git diff --name-only origin/${base}..${head}
+          git diff --name-only origin/${base}
 #          echo ${{ github.event.pull_request.base.ref }}
 #          echo ${{ github.event.pull_request.head.ref }}
 #          more $GITHUB_EVENT_PATH
