@@ -1,0 +1,12 @@
+name: Is Version Incremented
+on:
+  push:
+    branches:
+      - feature/is-version-incremented-action
+jobs:
+  is-version-incremented:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Diff
+        run: |
+          git diff --name-only
