@@ -1,19 +1,29 @@
 #!/usr/bin/env sh
 
-base=$1
-git fetch origin "${base}":refs/remotes/origin/"${base}"
+base_ref=$1
+git fetch -q origin "${base_ref}":refs/remotes/origin/"${base_ref}"
 
-path=$(git diff --name-only origin/"${base}" | grep pom.xml)
+path=$(git diff --name-only origin/"${base_ref}" | grep pom.xml)
 
 if [ -z "${path}" ]; then
   echo Cannot find pom.xml in changed files
   exit 1
 else
-  diff=$(git diff origin/"${base}" "${path}" | sed -e 's| ||g')
+  diff=$(git diff origin/"${base_ref}" "${path}" | sed -e 's| ||g')
   was=$(echo "${diff}" |
-    grep -Po "(?<=^-<version>)((\d+|.)+?)(?=<\/version>)")
+    grep -Po "(?<=^-<version>)((\d+|.)+?)(?=<\/version>)" |
+    sed -e 's|\.||g')
   become=$(echo "${diff}" |
-    grep -Po "(?<=^-<version>)((\d+|.)+?)(?=<\/version>)")
+    grep -Po "(?<=^+<version>)((\d+|.)+?)(?=<\/version>)" |
+    sed -e 's|\.||g')
   echo "${was}"
   echo "${become}"
+  difference=$((become - was))
+  echo "DIFFERENCE: ${difference}"
+  if "_=$((difference > 0))"; then
+    echo "IS OK"
+  else
+    echo "IS NOT OK"
+    exit 1
+  fi
 fi
