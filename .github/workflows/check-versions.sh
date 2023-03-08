@@ -14,7 +14,7 @@ else
     grep -Po "(?<=^-<version>)((\d+|.)+?)(?=<\/version>)" |
     sed -e 's|\.||g')
   become=$(echo "${diff}" |
-    grep -Po "(?<=^+<version>)((\d+|.)+?)(?=<\/version>)" |
+    grep -Po "(?<=^\+<version>)((\d+|.)+?)(?=<\/version>)" |
     sed -e 's|\.||g')
   echo "WAS: ${was}"
   echo "BECOME: ${become}"
