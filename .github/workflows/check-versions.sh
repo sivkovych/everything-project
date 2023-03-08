@@ -20,8 +20,7 @@ else
   echo "BECOME: ${become}"
   difference=$((become - was))
   echo "DIFFERENCE: ${difference}"
-  # shellcheck disable=SC2039
-  if ((difference > 0)); then
+  if [ ${difference} -gt 0 ]; then
     echo "IS OK"
   else
     echo "IS NOT OK"
