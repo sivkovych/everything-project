@@ -16,11 +16,13 @@ else
   become=$(echo "${diff}" |
     grep -Po "(?<=^+<version>)((\d+|.)+?)(?=<\/version>)" |
     sed -e 's|\.||g')
-  echo "${was}"
-  echo "${become}"
+  echo "WAS: ${was}"
+  echo "BECOME: ${become}"
   difference=$((become - was))
   echo "DIFFERENCE: ${difference}"
-  if "_=$((difference > 0))"; then
+  is_greater=$((difference > 0))
+  echo "IS GREATER: ${is_greater}"
+  if ${is_greater}; then
     echo "IS OK"
   else
     echo "IS NOT OK"
