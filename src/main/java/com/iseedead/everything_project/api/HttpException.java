@@ -6,8 +6,6 @@ import org.springframework.http.HttpStatus;
 
 import java.util.function.Supplier;
 
-// changed here
-
 @Getter
 @RequiredArgsConstructor
 @SuppressWarnings("unused")
