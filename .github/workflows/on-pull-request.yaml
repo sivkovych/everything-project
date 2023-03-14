@@ -1,29 +1,37 @@
 name: Compile & Test
 on:
-  push:
-    branches:
-      - main
+  - pull_request
 jobs:
-  compile:
+  check-version:
     runs-on: ubuntu-latest
-    env:
-      MAVEN_PROFILE: server
-      MAVEN_CLI_OPTIONS: --batch-mode
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Java Set Up
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Compile
-        run: mvn $MAVEN_CLI_OPTIONS clean compile -P$MAVEN_PROFILE
+      - name: Check Version
+        uses: actions/check-version-sh@v1
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: everything-project
           path: ${{ github.workspace }}/*
+  compile:
+    needs: check-version
+    runs-on: ubuntu-latest
+    env:
+      MAVEN_PROFILE: server
+      MAVEN_CLI_OPTIONS: --batch-mode
+    steps:
+      - name: Java Set Up
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: everything-project
+      - name: Compile
+        run: mvn $MAVEN_CLI_OPTIONS clean compile -P$MAVEN_PROFILE
   test:
     needs: compile
     runs-on: ubuntu-latest
