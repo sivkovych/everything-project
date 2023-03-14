@@ -10,7 +10,7 @@ jobs:
       - name: debug
         run: ls -la
       - name: Check Version
-        uses: sivkovych/check-version-sh@v2
+        uses: sivkovych/check-version-sh@v1
         with:
           log-level: "TRACE"
           check-only-for: "pom.xml"
