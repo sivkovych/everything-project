@@ -8,7 +8,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Check Version
-        uses: actions/check-version-sh@v1
+        uses: sivkovych/check-version-sh@v1
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
