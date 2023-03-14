@@ -7,8 +7,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: debug
+        run: ls -la
       - name: Check Version
         uses: sivkovych/check-version-sh@v2
+        with:
+          log-level: "TRACE"
+          check-only-for: "pom.xml"
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -21,15 +26,15 @@ jobs:
       MAVEN_PROFILE: server
       MAVEN_CLI_OPTIONS: --batch-mode
     steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: everything-project
       - name: Java Set Up
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: everything-project
       - name: Compile
         run: mvn $MAVEN_CLI_OPTIONS clean compile -P$MAVEN_PROFILE
   test:
@@ -39,14 +44,14 @@ jobs:
       MAVEN_PROFILE: server
       MAVEN_CLI_OPTIONS: --batch-mode
     steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: everything-project
       - name: Java Set Up
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: everything-project
       - name: Test
         run: mvn $MAVEN_CLI_OPTIONS test -P$MAVEN_PROFILE
