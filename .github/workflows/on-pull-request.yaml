@@ -2,14 +2,34 @@ name: Compile & Test
 on:
   - pull_request
 jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: debug
+        run: ls -la
+      - name: Check Version
+        uses: sivkovych/check-version-sh@v1
+        with:
+          log-level: "TRACE"
+          check-only-for: "pom.xml"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: everything-project
+          path: ${{ github.workspace }}/*
   compile:
+    needs: check-version
     runs-on: ubuntu-latest
     env:
       MAVEN_PROFILE: server
       MAVEN_CLI_OPTIONS: --batch-mode
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: everything-project
       - name: Java Set Up
         uses: actions/setup-java@v3
         with:
@@ -17,11 +37,6 @@ jobs:
           java-version: '17'
       - name: Compile
         run: mvn $MAVEN_CLI_OPTIONS clean compile -P$MAVEN_PROFILE
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: everything-project
-          path: ${{ github.workspace }}/*
   test:
     needs: compile
     runs-on: ubuntu-latest
@@ -29,14 +44,14 @@ jobs:
       MAVEN_PROFILE: server
       MAVEN_CLI_OPTIONS: --batch-mode
     steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: everything-project
       - name: Java Set Up
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: everything-project
       - name: Test
         run: mvn $MAVEN_CLI_OPTIONS test -P$MAVEN_PROFILE
