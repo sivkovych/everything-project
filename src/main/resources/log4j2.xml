@@ -63,12 +63,6 @@
 
     <!-- loggers -->
     <Loggers>
-        <!-- third-party logs -->
-        <Logger name="org.hibernate" level="warn"/>
-        <!-- to prevent Hibernate from uncontrollably logging errors and warns -->
-        <!-- exceptions will still be thrown and logged on application side -->
-        <Logger name="org.hibernate.engine.jdbc.spi.SqlExceptionHelper" level="off" additivity="false"/>
-
         <Root level="info">
             <AppenderRef ref="BASE_ASYNC"/>
             <AppenderRef ref="STDOUT_ASYNC"/>
