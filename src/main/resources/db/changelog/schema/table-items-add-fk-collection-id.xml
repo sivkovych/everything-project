@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="foreign_key_collection_items" author="pavlo.sivkovych">
+        <preConditions onFail="HALT">
+            <tableExists tableName="items"/>
+            <tableExists tableName="collections"/>
+            <columnExists tableName="items"
+                          columnName="collection_id"/>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="items"
+                                 baseColumnNames="collection_id"
+                                 constraintName="fk-items-collection-id"
+                                 referencedTableName="collections"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="items" constraintName="fk-items-collection-id"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

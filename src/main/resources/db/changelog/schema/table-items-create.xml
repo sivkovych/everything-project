@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="table-items-create" author="pavlo.sivkovych">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="items"/>
+            </not>
+        </preConditions>
+        <createTable tableName="items">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="data" type="json">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="items"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
