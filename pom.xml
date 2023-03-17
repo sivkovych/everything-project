@@ -6,7 +6,7 @@
     <groupId>com.sivkovych</groupId>
     <artifactId>everything-project</artifactId>
     <name>${project.artifactId}</name>
-    <version>0.1.14</version>
+    <version>0.2.0</version>
     <packaging>jar</packaging>
 
     <parent>
