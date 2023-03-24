@@ -15,6 +15,7 @@ springdoc:
     display-request-duration: true
     use-root-path: true
     default-models-expand-depth: -1
+    try-it-out-enabled: true
   cache.disabled: true
   group-configs:
     - group: api-v1
