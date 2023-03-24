@@ -7,9 +7,12 @@
     <changeSet id="base-schema" author="pavlo.sivkovych">
         <tagDatabase tag="base-schema"/>
     </changeSet>
-    <include file="/db/changelog/schema/table-items-create.xml"/>
+    <include file="/db/changelog/schema/items/table-items-create.xml"/>
     <include file="/db/changelog/schema/table-system-properties-create.xml"/>
-    <include file="/db/changelog/schema/table-collections-create.xml"/>
-    <include file="/db/changelog/schema/table-items-add-column-collection-id.xml"/>
-    <include file="/db/changelog/schema/table-items-add-fk-collection-id.xml"/>
+    <include file="/db/changelog/schema/collections/table-collections-create.xml"/>
+    <include file="/db/changelog/schema/items/table-items-add-column-collection-id.xml"/>
+    <include file="/db/changelog/schema/items/table-items-add-fk-collection-id.xml"/>
+    <include file="/db/changelog/schema/items/table-items-add-idx-collection-id.xml"/>
+    <include file="/db/changelog/schema/items/table-items-add-idx-id-collection-id.xml"/>
+    <include file="/db/changelog/schema/collections/table-collections-add-column-name.xml"/>
 </databaseChangeLog>
