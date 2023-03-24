@@ -20,11 +20,11 @@ public final class ForCodeWithTestName extends DisplayNameGenerator.Standard {
                                 .getSimpleName();
             }
         } else {
-            var simpleName = forClass.value()
+            displayName = forClass.value()
                     .getSimpleName();
-            displayName = forGlobalMethod == null
-                    ? simpleName
-                    : simpleName + "#" + forGlobalMethod.value();
+        }
+        if (forGlobalMethod != null) {
+            displayName = displayName + "#" + forGlobalMethod.value();
         }
         return displayName;
     }

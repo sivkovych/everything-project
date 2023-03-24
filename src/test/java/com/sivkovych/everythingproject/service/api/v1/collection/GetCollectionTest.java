@@ -1,48 +1,51 @@
-package com.sivkovych.everythingproject.service.api.v1.item;
+package com.sivkovych.everythingproject.service.api.v1.collection;
 
 import com.sivkovych.everythingproject._util.displayname.ForMethod;
 import com.sivkovych.everythingproject.service.api.ResponseBodyMatchers;
-import com.sivkovych.everythingproject.service.domain.item.ItemService;
+import com.sivkovych.everythingproject.service.domain.collection.CollectionService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ForMethod("delete(Long collectionId, Long itemId)")
+@ForMethod("get(Long id)")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-class DeleteItemTest extends ItemControllerTest {
+class GetCollectionTest extends CollectionControllerTest {
+    private final CollectionMapper mapper;
     private final MockMvc mvc;
-    private final ItemService service;
+    private final CollectionService service;
 
     @Test
-    public void shouldRemoveItem_whenValidId() throws Exception {
-        mvc.perform(delete(getUrl(1L, 1L)))
+    public void shouldReturnCollection_whenValidId() throws Exception {
+        var collection = getCollection();
+        var getCollection = getMapper().from(collection);
+        when(service.findBy(collection.getId())).thenReturn(Optional.of(collection));
+        when(mapper.from(collection)).thenReturn(getCollection);
+        mvc.perform(get(getUrl(collection.getId())))
                 .andExpect(status().isOk())
                 .andExpect(ResponseBodyMatchers.body()
-                                   .isEmpty());
-        verify(service).delete(1L, 1L);
+                                   .is(getCollection));
     }
 
     @Test
     public void shouldReturnNotFound_whenInvalidId() throws Exception {
-        doThrow(new EmptyResultDataAccessException("No item with [collectionId='1', id='1'] exists", 1)).when(service)
-                .delete(anyLong(), anyLong());
-        mvc.perform(delete(getUrl(1L, 1L)))
+        when(service.findBy(anyLong())).thenReturn(Optional.empty());
+        mvc.perform(get(getUrl(1L)))
                 .andExpect(status().isNotFound())
                 .andExpect(ResponseBodyMatchers.body()
-                                   .isNotFound("No item with [collectionId='1', id='1'] exists"));
+                                   .isError(new CollectionNotFound(1L)));
     }
 
     @Test
     public void shouldReturnBadRequest_whenIdIsNotNumber() throws Exception {
-        mvc.perform(delete(getUrl(null, null)))
+        mvc.perform(get(getUrl(null)))
                 .andExpect(status().isBadRequest())
                 .andExpect(ResponseBodyMatchers.body()
                                    .isBadRequest("Failed to convert value of type 'java.lang.String' to required "
@@ -51,9 +54,8 @@ class DeleteItemTest extends ItemControllerTest {
 
     @Test
     public void shouldReturnInternalError() throws Exception {
-        doThrow(new RuntimeException("Something went wrong")).when(service)
-                .delete(anyLong(), anyLong());
-        mvc.perform(delete(getUrl(1L, 1L)))
+        when(service.findBy(anyLong())).thenThrow(new RuntimeException("Something went wrong"));
+        mvc.perform(get(getUrl(anyLong())))
                 .andExpect(status().isInternalServerError())
                 .andExpect(ResponseBodyMatchers.body()
                                    .isInternalServerError("Something went wrong"));

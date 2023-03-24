@@ -6,8 +6,6 @@ import com.sivkovych.everythingproject.service.domain.item.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Map;
@@ -19,7 +17,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ForMethod("get(Long collectionId, Long itemId)")
-@MockBeans({@MockBean(ItemService.class), @MockBean(ItemMapper.class)})
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class GetItemTest extends ItemControllerTest {
     private final ItemMapper mapper;
