@@ -12,10 +12,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import java.util.Optional;
+import java.util.function.Supplier;
+
 @Slf4j
 @Component
 @RestControllerAdvice
 public class ApiExceptionHandler {
+    public static <T> Supplier<HttpException> getException(Optional<T> optional) {
+        return HttpException.get(HttpStatus.BAD_REQUEST, optional.isEmpty()
+                ? "No data passed"
+                : "Invalid data passed");
+    }
+
     public static ResponseEntity<ApiError> getError(HttpStatus status, Exception exception) {
         return ResponseEntity.status(status)
                 .body(new ApiError(status, exception.getMessage()));

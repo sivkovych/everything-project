@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 
-import static com.sivkovych.everythingproject.service.api.v1.ExceptionHandlerAdvice.getException;
+import static com.sivkovych.everythingproject.service.api.ApiExceptionHandler.getException;
 
 @RequiredArgsConstructor
 @RestControllerV1(produces = MediaType.APPLICATION_JSON_VALUE)

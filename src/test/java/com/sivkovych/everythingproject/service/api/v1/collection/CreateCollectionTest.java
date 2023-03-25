@@ -1,9 +1,9 @@
-package com.sivkovych.everythingproject.service.api.v1.item;
+package com.sivkovych.everythingproject.service.api.v1.collection;
 
 import com.sivkovych.everythingproject._util.displayname.ForMethod;
 import com.sivkovych.everythingproject.service.api.ResponseBodyMatchers;
-import com.sivkovych.everythingproject.service.api.v1.item.dto.SetItem;
-import com.sivkovych.everythingproject.service.domain.item.ItemService;
+import com.sivkovych.everythingproject.service.api.v1.collection.dto.SetCollection;
+import com.sivkovych.everythingproject.service.domain.collection.CollectionService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,34 +13,34 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Map;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ForMethod("create(Long collectionId, Optional<SetItem> item)")
+@ForMethod("create(Optional<SetCollection> collection)")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-class UpdateItemTest extends ItemControllerTest {
-    private final ItemMapper mapper;
+class CreateCollectionTest extends CollectionControllerTest {
+    private final CollectionMapper mapper;
     private final MockMvc mvc;
-    private final ItemService service;
+    private final CollectionService service;
 
     @Test
-    public void shouldPersistEntity_whenRequestIsValid() throws Exception {
-        var setItem = new SetItem(Map.of("key", "value"));
-        var item = getMapper().to(1L, setItem);
-        var getItem = getMapper().from(item);
-        when(mapper.to(1L, 1L, setItem)).thenReturn(item);
-        when(mapper.from(item)).thenReturn(getItem);
-        when(service.save(item)).thenAnswer(invocation -> item);
-        mvc.perform(put(getUrl(1L, 1L)).contentType(MediaType.APPLICATION_JSON)
-                            .content(asJson(setItem)))
+    public void shouldPersistCollection_whenRequestIsValid() throws Exception {
+        var setCollection = new SetCollection("some-name");
+        var collection = getMapper().to(setCollection);
+        var getCollection = getMapper().from(collection);
+        when(mapper.to(setCollection)).thenReturn(collection);
+        when(mapper.from(collection)).thenReturn(getCollection);
+        when(service.save(collection)).thenAnswer(invocation -> collection);
+        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON)
+                            .content(asJson(setCollection)))
                 .andExpect(status().isOk())
                 .andExpect(ResponseBodyMatchers.body()
-                                   .is(getItem));
+                                   .is(getCollection));
     }
 
     @Test
     public void shouldReturnBadRequest_whenRequestIsEmpty() throws Exception {
-        mvc.perform(put(getUrl(1L, 1L)).contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(ResponseBodyMatchers.body()
                                    .isBadRequest("No data passed"));
@@ -48,7 +48,7 @@ class UpdateItemTest extends ItemControllerTest {
 
     @Test
     public void shouldReturnUnsupportedMediaType_whenRequestHasWrongContentType() throws Exception {
-        mvc.perform(put(getUrl(1L, 1L)).contentType(MediaType.TEXT_HTML))
+        mvc.perform(post(getUrl()).contentType(MediaType.TEXT_HTML))
                 .andExpect(status().isUnsupportedMediaType())
                 .andExpect(ResponseBodyMatchers.body()
                                    .isUnsupportedMediaType("Content-Type 'text/html' is not supported"));
@@ -57,7 +57,7 @@ class UpdateItemTest extends ItemControllerTest {
     @Test
     public void shouldReturnBadRequest_whenRequestHasWrongContent() throws Exception {
         var data = asJson(Map.of("kek", "double-kek"));
-        mvc.perform(put(getUrl(1L, 1L)).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON)
                             .content(data))
                 .andExpect(status().isBadRequest())
                 .andExpect(ResponseBodyMatchers.body()
@@ -66,12 +66,12 @@ class UpdateItemTest extends ItemControllerTest {
 
     @Test
     public void shouldReturnInternalError() throws Exception {
-        var setItem = new SetItem(Map.of("key", "value"));
-        var item = getMapper().to(1L, setItem);
-        when(mapper.to(1L, 1L, setItem)).thenReturn(item);
-        when(service.save(item)).thenThrow(new RuntimeException("Something went wrong"));
-        mvc.perform(put(getUrl(1L, 1L)).contentType(MediaType.APPLICATION_JSON)
-                            .content(asJson(setItem)))
+        var setCollection = new SetCollection("some-name");
+        var collection = getMapper().to(setCollection);
+        when(mapper.to(setCollection)).thenReturn(collection);
+        when(service.save(collection)).thenThrow(new RuntimeException("Something went wrong"));
+        mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON)
+                            .content(asJson(setCollection)))
                 .andExpect(status().isInternalServerError())
                 .andExpect(ResponseBodyMatchers.body()
                                    .isInternalServerError("Something went wrong"));
